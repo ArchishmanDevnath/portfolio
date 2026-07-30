@@ -3,7 +3,7 @@ export const site = {
   
     role: "Aspiring Product Manager",
   
-    tagline: "From curiosity to clarity.",
+    tagline: "Studying products, building perspective",
   
     description:
       "I break down products I admire, build experiments, and document my learnings on product strategy, user experience, and business decisions.",
@@ -13,7 +13,7 @@ export const site = {
         resume: "#",
         projects: "#",
         email: "archishman.devnath@gmail.com",
-        github: "https://github.com/biblomaniac",
+        github: "https://github.com/ArchishmanDevnath",
         linkedin: "https://www.linkedin.com/in/archishman-debnath-8061b6293/",
     },
   };

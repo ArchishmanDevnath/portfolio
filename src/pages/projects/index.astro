@@ -62,4 +62,8 @@ const hasMultipleProjects = projects.length > 1;
   @media (min-width: 48rem) {
     .project-list.has-multiple { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
+
+  @media (max-width: 39.999rem) {
+    .project-card { gap: var(--space-3); padding: var(--space-4); }
+  }
 </style>

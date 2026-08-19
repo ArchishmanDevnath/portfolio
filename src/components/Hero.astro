@@ -49,4 +49,13 @@ import { site } from "../config/site";
   @media (min-width: 40rem) {
     .hero-actions { flex-direction: row; }
   }
+
+  @media (max-width: 39.999rem) {
+    .hero-section { padding-block: var(--space-5) var(--space-7); }
+    .hero-eyebrow { margin-bottom: var(--space-4); }
+    .hero-heading { font-size: clamp(2.25rem, 10vw, 3.25rem); overflow-wrap: anywhere; text-wrap: balance; }
+    .hero-description { margin-top: var(--space-5); }
+    .hero-actions { width: min(100%, 20rem); margin-inline: auto; margin-top: var(--space-6); }
+    .hero-actions .button { width: 100%; }
+  }
 </style>

@@ -1,0 +1,67 @@
+---
+import { getCollection } from "astro:content";
+import Footer from "../../components/Footer.astro";
+import Navbar from "../../components/Navbar.astro";
+import { site } from "../../config/site";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const insights = (await getCollection("insights")).sort(
+  (a, b) => (b.data.publishDate?.getTime() ?? 0) - (a.data.publishDate?.getTime() ?? 0),
+);
+const hasMultipleInsights = insights.length > 1;
+---
+
+<BaseLayout
+  title={`Insights | ${site.name}`}
+  description={`Writing and insights by ${site.name}.`}
+>
+  <Navbar />
+
+  <main class:list={["flex-1", { "page-main": !hasMultipleInsights }]}>
+    <section class:list={["section", { "page-section": !hasMultipleInsights }]}>
+      <div class:list={[hasMultipleInsights ? "content-container" : "reading-container", "content-panel"]}>
+        <header>
+          <p class="eyebrow">Insights</p>
+          <h1 class="heading-1 page-heading">Insights</h1>
+        </header>
+
+        <div class:list={["insight-list", { "has-multiple": hasMultipleInsights }]}>
+          {insights.map((insight) => (
+            <article class="insight-card">
+              <div class="insight-card-header">
+                {insight.data.status === "placeholder" && <span class="metadata">Placeholder</span>}
+                <h2 class="heading-3">
+                  <a class="text-link insight-title-link" href={`/insights/${insight.id}`}>{insight.data.title}</a>
+                </h2>
+              </div>
+
+              <p class="text-secondary insight-summary">{insight.data.summary}</p>
+
+              {insight.data.tags && insight.data.tags.length > 0 && (
+                <ul class="insight-tags" role="list" aria-label="Tags">
+                  {insight.data.tags.map((tag) => <li class="metadata">{tag}</li>)}
+                </ul>
+              )}
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .page-heading { margin-top: var(--space-3); }
+  .insight-list { display: grid; gap: var(--space-4); margin-top: var(--space-6); }
+  .insight-card { display: grid; gap: var(--space-4); padding: var(--space-5); border: 1px solid var(--color-border); border-radius: var(--radius-md); background-color: var(--color-surface-muted); }
+  .insight-card-header { display: grid; gap: var(--space-2); }
+  .insight-title-link { text-decoration-thickness: 1px; }
+  .insight-summary { margin: 0; }
+  .insight-tags { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+
+  @media (min-width: 48rem) {
+    .insight-list.has-multiple { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+</style>

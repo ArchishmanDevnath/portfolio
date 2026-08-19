@@ -3,32 +3,34 @@ import { site } from "../config/site";
 ---
 
 
-<section class="mx-auto flex flex-1 items-center justify-center px-6">
-  <div class="max-w-3xl text-center">
+<section class="section hero hero-section flex flex-1 items-center">
+  <div class="content-container text-center">
 
-    <p class="mb-5 text-sm font-medium uppercase tracking-[0.35em] text-gray-500">
+    <p class="eyebrow hero-eyebrow">
       {site.role}
     </p>
 
-    <h1 class="text-5xl font-bold tracking-tight md:text-7xl">
-      {site.tagline}
-    </h1>
+    <div class="reading-container hero-copy">
+      <h1 class="display-heading hero-heading">
+        {site.tagline}
+      </h1>
 
-    <p class="mx-auto mt-8 max-w-2xl text-lg leading-8 text-gray-600">
-      {site.description}
-    </p>
+      <p class="hero-description text-secondary">
+        {site.description}
+      </p>
+    </div>
 
-    <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+    <div class="hero-actions flex flex-col items-center justify-center">
       <a
         href={site.links.projects}
-        class="rounded-lg bg-black px-6 py-3 font-medium text-white transition hover:bg-gray-800"
+        class="button button-primary"
       >
         View Projects
       </a>
 
       <a
         href={site.links.resume}
-        class="rounded-lg border border-gray-300 px-6 py-3 font-medium transition hover:bg-gray-100"
+        class="button button-secondary"
       >
         Download Resume
       </a>
@@ -36,3 +38,15 @@ import { site } from "../config/site";
 
   </div>
 </section>
+
+<style>
+  .hero-eyebrow { margin-bottom: var(--space-5); }
+  .hero-section { padding-block: clamp(var(--space-6), 6vw, var(--space-8)); }
+  .hero-copy { margin-inline: auto; }
+  .hero-description { margin-top: var(--space-6); font-size: var(--text-body); line-height: var(--leading-body); }
+  .hero-actions { gap: var(--space-3); margin-top: var(--space-7); }
+
+  @media (min-width: 40rem) {
+    .hero-actions { flex-direction: row; }
+  }
+</style>

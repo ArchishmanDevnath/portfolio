@@ -1,0 +1,66 @@
+---
+import { getCollection, render } from "astro:content";
+import Footer from "../../components/Footer.astro";
+import Navbar from "../../components/Navbar.astro";
+import { site } from "../../config/site";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const insights = await getCollection("insights");
+
+  return insights.map((insight) => ({
+    params: { slug: insight.id },
+    props: { insight },
+  }));
+}
+
+const { insight } = Astro.props;
+const { Content } = await render(insight);
+---
+
+<BaseLayout
+  title={`${insight.data.title} | ${site.name}`}
+  description={insight.data.summary}
+>
+  <Navbar />
+
+  <main class="page-main">
+    <section class="section page-section">
+      <article class="reading-container content-panel insight-detail">
+        <header>
+          <p class="eyebrow">Insight</p>
+          <h1 class="heading-1 page-heading">{insight.data.title}</h1>
+          <p class="text-secondary insight-summary">{insight.data.summary}</p>
+          {insight.data.status === "placeholder" && <p class="metadata insight-status">Placeholder</p>}
+
+          {insight.data.tags && insight.data.tags.length > 0 && (
+            <ul class="insight-tags" role="list" aria-label="Tags">
+              {insight.data.tags.map((tag) => <li class="metadata">{tag}</li>)}
+            </ul>
+          )}
+        </header>
+
+        <div class="insight-body">
+          <Content />
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .page-heading { margin-top: var(--space-3); }
+  .insight-summary { margin-top: var(--space-5); }
+  .insight-status { margin-top: var(--space-4); }
+  .insight-tags { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-4); }
+  .insight-body { margin-top: var(--space-7); color: var(--color-text-secondary); }
+  .insight-body :global(:is(h2, h3, h4, h5, h6)) { margin: var(--space-7) 0 var(--space-3); color: var(--color-text-primary); font-family: var(--font-display); font-weight: var(--weight-regular); letter-spacing: -0.025em; line-height: var(--leading-heading); }
+  .insight-body :global(h2) { font-size: var(--text-h2); }
+  .insight-body :global(h3) { font-family: var(--font-sans); font-size: var(--text-h3); font-weight: var(--weight-semibold); }
+  .insight-body :global(p) { margin: 0 0 var(--space-5); }
+  .insight-body :global(:is(ul, ol)) { display: grid; gap: var(--space-2); margin: 0 0 var(--space-5); padding-left: var(--space-5); }
+  .insight-body :global(a) { color: var(--color-accent); text-decoration: underline; text-underline-offset: 0.18em; }
+  .insight-body :global(blockquote) { margin: 0 0 var(--space-5); padding-left: var(--space-4); border-left: 2px solid var(--color-border-strong); }
+</style>

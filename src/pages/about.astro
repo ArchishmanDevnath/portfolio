@@ -1,0 +1,34 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Footer from "../components/Footer.astro";
+import Navbar from "../components/Navbar.astro";
+import { site } from "../config/site";
+---
+
+<BaseLayout
+  title={`About | ${site.name}`}
+  description={`About ${site.name}.`}
+>
+  <Navbar />
+
+  <main class="page-main">
+    <section class="section page-section">
+      <div class="reading-container content-panel">
+        <p class="eyebrow">About</p>
+        <h1 class="heading-1 page-heading">About this portfolio</h1>
+
+        <!-- PLACEHOLDER: About narrative content needed from user -->
+        <p class="text-secondary page-copy">
+          A fuller introduction and personal perspective will be added here.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .page-heading { margin-top: var(--space-3); }
+  .page-copy { margin-top: var(--space-5); }
+</style>

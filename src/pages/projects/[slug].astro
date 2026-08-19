@@ -1,0 +1,82 @@
+---
+import { getCollection, render } from "astro:content";
+import Footer from "../../components/Footer.astro";
+import Navbar from "../../components/Navbar.astro";
+import { site } from "../../config/site";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+---
+
+<BaseLayout
+  title={`${project.data.title} | ${site.name}`}
+  description={project.data.summary}
+>
+  <Navbar />
+
+  <main class="page-main">
+    <section class="section page-section">
+      <article class="reading-container content-panel project-detail">
+        <header>
+          <p class="eyebrow">Project</p>
+          <h1 class="heading-1 page-heading">{project.data.title}</h1>
+          <p class="text-secondary project-summary">{project.data.summary}</p>
+          {project.data.status === "placeholder" && <p class="metadata project-status">Placeholder</p>}
+        </header>
+
+        <div class="project-sections">
+          <section class="project-section">
+            <h2 class="heading-3">Problem</h2>
+            <p class="text-secondary">{project.data.problem}</p>
+          </section>
+
+          <section class="project-section">
+            <h2 class="heading-3">Solution</h2>
+            <p class="text-secondary">{project.data.solution}</p>
+          </section>
+
+          {project.data.tradeoffs && (
+            <section class="project-section">
+              <h2 class="heading-3">Tradeoffs</h2>
+              <p class="text-secondary">{project.data.tradeoffs}</p>
+            </section>
+          )}
+
+          {project.data.outcome && (
+            <section class="project-section">
+              <h2 class="heading-3">Outcome</h2>
+              <p class="text-secondary">{project.data.outcome}</p>
+            </section>
+          )}
+        </div>
+
+        <div class="project-body">
+          <Content />
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .page-heading { margin-top: var(--space-3); }
+  .project-summary { margin-top: var(--space-5); }
+  .project-status { margin-top: var(--space-4); }
+  .project-sections { display: grid; gap: var(--space-6); margin-top: var(--space-7); }
+  .project-section { display: grid; gap: var(--space-3); padding-top: var(--space-6); border-top: 1px solid var(--color-border); }
+  .project-section p { margin: 0; }
+  .project-body { margin-top: var(--space-7); }
+  .project-body :global(p) { color: var(--color-text-secondary); }
+</style>

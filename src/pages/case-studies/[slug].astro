@@ -1,0 +1,90 @@
+---
+import { getCollection, render } from "astro:content";
+import Footer from "../../components/Footer.astro";
+import Navbar from "../../components/Navbar.astro";
+import { site } from "../../config/site";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const caseStudies = await getCollection("caseStudies");
+
+  return caseStudies.map((caseStudy) => ({
+    params: { slug: caseStudy.id },
+    props: { caseStudy },
+  }));
+}
+
+const { caseStudy } = Astro.props;
+const { Content } = await render(caseStudy);
+---
+
+<BaseLayout
+  title={`${caseStudy.data.title} | ${site.name}`}
+  description={caseStudy.data.summary}
+>
+  <Navbar />
+
+  <main class="page-main">
+    <section class="section page-section">
+      <article class="reading-container content-panel case-study-detail">
+        <header>
+          <p class="eyebrow">Case Study</p>
+          <h1 class="heading-1 page-heading">{caseStudy.data.title}</h1>
+          <p class="text-secondary case-study-summary">{caseStudy.data.summary}</p>
+          {caseStudy.data.status === "placeholder" && <p class="metadata case-study-status">Placeholder</p>}
+        </header>
+
+        <div class="case-study-sections">
+          <section class="case-study-section">
+            <h2 class="heading-3">Context</h2>
+            <p class="text-secondary">{caseStudy.data.context}</p>
+          </section>
+
+          <section class="case-study-section">
+            <h2 class="heading-3">Problem</h2>
+            <p class="text-secondary">{caseStudy.data.problem}</p>
+          </section>
+
+          <section class="case-study-section">
+            <h2 class="heading-3">Users</h2>
+            <p class="text-secondary">{caseStudy.data.users}</p>
+          </section>
+
+          <section class="case-study-section">
+            <h2 class="heading-3">Diagnosis</h2>
+            <p class="text-secondary">{caseStudy.data.diagnosis}</p>
+          </section>
+
+          <section class="case-study-section">
+            <h2 class="heading-3">Recommendation</h2>
+            <p class="text-secondary">{caseStudy.data.recommendation}</p>
+          </section>
+
+          {caseStudy.data.reflection && (
+            <section class="case-study-section">
+              <h2 class="heading-3">Reflection</h2>
+              <p class="text-secondary">{caseStudy.data.reflection}</p>
+            </section>
+          )}
+        </div>
+
+        <div class="case-study-body">
+          <Content />
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .page-heading { margin-top: var(--space-3); }
+  .case-study-summary { margin-top: var(--space-5); }
+  .case-study-status { margin-top: var(--space-4); }
+  .case-study-sections { display: grid; gap: var(--space-6); margin-top: var(--space-7); }
+  .case-study-section { display: grid; gap: var(--space-3); padding-top: var(--space-6); border-top: 1px solid var(--color-border); }
+  .case-study-section p { margin: 0; }
+  .case-study-body { margin-top: var(--space-7); }
+  .case-study-body :global(p) { color: var(--color-text-secondary); }
+</style>
